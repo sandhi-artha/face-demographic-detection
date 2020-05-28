@@ -7,12 +7,14 @@ import Signin from './Components/User/Signin';
 import Register from './Components/User/Register';
 
 
+const initialState = {
+  input: '',
+  route: 'signin',
+  data: []
+}
+
 class App extends React.Component{
-  state = {
-    input: '',
-    route: 'signin',
-    data: []
-  }
+  state = { ...initialState } // using spread operator prevents mutating the initialState
 
   render(){
     const geturl = (event) => { this.setState({ input: event.target.value}) }
@@ -31,12 +33,15 @@ class App extends React.Component{
       .catch(err => console.log(err));
     }
 
-    const onRouteChange = (newRoute) => { this.setState({route: newRoute}) }
+    const onRouteChange = (newRoute) => {
+      // if returning to signin view (means user is signing out), hide the signout nav and reset to initialState
+      if(newRoute==='signin'){
+        document.querySelector('.nav').classList.add('hidden')
+        this.setState(initialState);
+      }
+      this.setState({route: newRoute})
+    }
     const updateUser = (data) => { this.setState({data}) }
-
-    
-
-    
 
     return (
       <div className="App">
@@ -61,8 +66,8 @@ class App extends React.Component{
 export default App;
 
 /*  TODO
-  1. create navigation, should be hidden before signin
-  2. build routing for signin, register, and signout
+  1. create navigation, should be hidden before signin  DONE
+  2. build routing for signin, register, and signout  DONE
   3. on signout, clear all state
-  4. change fetch in all components to use a const instead
+  4. change fetch in all components to use a const instead  DONE
 */

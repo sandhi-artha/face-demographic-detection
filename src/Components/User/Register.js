@@ -15,6 +15,7 @@ const onSubmitRegister = (onRouteChange, updateUser, server) => {
         if (data.name){
             updateUser(data);
             onRouteChange('content');
+            document.querySelector('.nav').classList.remove('hidden');  // if successfully registered, show the signout nav
         }
     })
   }
