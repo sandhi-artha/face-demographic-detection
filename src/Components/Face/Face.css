@@ -1,0 +1,32 @@
+.hidden {
+    display: none !important;
+}
+
+.face {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.face-bounding-boxes {
+    position: relative;
+}
+
+.bounding-box {
+    position: absolute;
+    border: solid 2px gold
+}
+
+.face-info{
+    background-color: rgba(42, 43, 43, 0.5);
+}
+.face-info h5 {
+    margin: 10px;
+}
+
+.face-predictions{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    width: 100%;
+}
+
+
