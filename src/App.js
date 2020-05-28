@@ -4,6 +4,7 @@ import Search from './Components/Search/Search';
 import Face from './Components/Face/Face';
 import Nav from './Components/Nav/Nav';
 import Signin from './Components/User/Signin';
+import Register from './Components/User/Register';
 
 
 class App extends React.Component{
@@ -33,17 +34,23 @@ class App extends React.Component{
     const onRouteChange = (newRoute) => { this.setState({route: newRoute}) }
     const updateUser = (data) => { this.setState({data}) }
 
+    
+
+    
+
     return (
       <div className="App">
         <h1>Welcome!</h1>
         <Nav onRouteChange={onRouteChange}/>
         {
           this.state.route === 'signin'
-          ? <Signin server={server} onRouteChange={onRouteChange} updateUser={updateUser} />
-            : <div className="main-content">
-                <Search geturl={geturl} getState={getState} onButtonSubmit={onButtonSubmit}/>
-                <Face />
-              </div>
+          ? <Signin onRouteChange={onRouteChange} updateUser={updateUser} server={server} />
+            : this.state.route === 'register'
+              ? <Register onRouteChange={onRouteChange} updateUser={updateUser} server={server}/>
+              : <div className="main-content">
+                  <Search geturl={geturl} getState={getState} onButtonSubmit={onButtonSubmit}/>
+                  <Face />
+                </div>
         }
         
       </div>
