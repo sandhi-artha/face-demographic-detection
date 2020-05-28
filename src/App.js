@@ -59,6 +59,19 @@ class App extends React.Component{
       userProfile: data.profile
     }) }
 
+    // called when all face blobs are gathered, send blobs along with prdiction data
+    const sendPrediction = (blobFile) => {
+      const form = new FormData();
+      for (let i=0; i<blobFile.length; i++){
+        const id = this.state.currPredictions[i].predid;
+        form.append("image", blobFile[i], id)   // id will be the originalname went sent to server
+      }
+      fetch(server+'blobs', { method: 'post', body: form })
+      .then(resp => resp.json())
+      .then(msg => console.log(msg))
+      .catch(err => console.log(err))
+    }
+
     const drawFaceBlobs = () => {
       const canvas = document.getElementById("myCanvas");
       const ctx = canvas.getContext('2d');
@@ -84,7 +97,9 @@ class App extends React.Component{
             blobCount++;
             // if(blobCount === predicts.length){ sendPrediction(blobFile) }   // store blob in array and triggers the send function without when all blobs completed
             if(blobCount === predicts.length){   // when all the blobs have been collected
-              this.setState({ blobURL: blob2imgArr(blobFile)})
+              this.setState({ blobURL: blob2imgArr(blobFile)});
+              console.log("sending blobs..")
+              sendPrediction(blobFile);
             }
           }, 'image/jpeg', 0.95);
         })
@@ -130,6 +145,7 @@ export default App;
   6. create state holding new prediction  DONE
   7. draw bounding box on main image  DONE
   8. draw faceblobs using canvas and convert to blobURL   DONE
-  9. show the blobURLs in face-info
-  10. show prediction results in face-info
+  9. show the blobURLs in face-info   DONE
+  10. show prediction results in face-info  DONE
+  11. remember to revoke object url
 */
