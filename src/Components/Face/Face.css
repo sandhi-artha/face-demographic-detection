@@ -1,17 +1,13 @@
-.hidden {
-    display: none !important;
-}
-
 .face {
     display: grid;
     grid-template-columns: 1fr 1fr;
 }
 
-.face-bounding-boxes {
+.face-bboxes {
     position: relative;
 }
 
-.bounding-box {
+.box {
     position: absolute;
     border: solid 2px gold
 }

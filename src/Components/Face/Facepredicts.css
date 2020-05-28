@@ -1,0 +1,27 @@
+.face-predicts {
+    position: relative;
+    padding: 10px;
+}
+/* link image and preds, show only when the right image is clicked */
+.preds {
+    position: absolute;
+    display: none;
+}
+
+.highlight {
+    display: block !important;
+}
+
+.preds-label {
+    color: rgb(48, 44, 44);
+    font-size: 14px;
+    font-weight: bold;
+    margin: 10px 5px;
+}
+
+.preds-output {
+    color: white;
+    font-size: 12px;
+    font-weight: 400;
+    margin: 5px;
+}

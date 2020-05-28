@@ -14,7 +14,7 @@ const initialState = {
   userPredictions: [],
   userProfile: '',
   currPredictions: [],
-  blobURL: ''
+  blobURL: []
 }
 
 const server = 'http://localhost:5000/';
@@ -97,7 +97,7 @@ class App extends React.Component{
       return blobs.map(blob => URL.createObjectURL(blob))
     }
 
-    const {userPredictions, currPredictions} = this.state;
+    const {currPredictions, blobURL} = this.state;
     return (
       <div className="App">
         <h1>Welcome!</h1>
@@ -109,7 +109,7 @@ class App extends React.Component{
               ? <Register onRouteChange={onRouteChange} updateUser={updateUser} server={server}/>
               : <div className="main-content">
                   <Search geturl={geturl} getState={getState} onButtonSubmit={onButtonSubmit}/>
-                  <Face userPredictions={userPredictions} currPredictions={currPredictions}/>
+                  <Face currPredictions={currPredictions} blobURL={blobURL}/>
                   <canvas id='myCanvas'></canvas>
                 </div>
         }
@@ -130,4 +130,6 @@ export default App;
   6. create state holding new prediction  DONE
   7. draw bounding box on main image  DONE
   8. draw faceblobs using canvas and convert to blobURL   DONE
+  9. show the blobURLs in face-info
+  10. show prediction results in face-info
 */
