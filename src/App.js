@@ -148,4 +148,7 @@ export default App;
   9. show the blobURLs in face-info   DONE
   10. show prediction results in face-info  DONE
   11. remember to revoke object url
+  12. create mockup data to simulate history images
+  13. create history and its card components
+  14. when user clicks on a history image, it will sent that data to currPrediction
 */

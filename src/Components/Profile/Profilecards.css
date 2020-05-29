@@ -1,0 +1,19 @@
+.card-div{
+    margin: 5px 5px;
+    cursor: pointer;
+}
+
+.card-image{
+    object-fit: cover;
+}
+
+.card-text {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.card-text p{
+    margin: 0 10px;
+}
