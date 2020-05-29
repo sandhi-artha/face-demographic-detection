@@ -25,9 +25,7 @@ class App extends React.Component{
   render(){
     const geturl = (event) => { this.setState({ input: event.target.value}) }
     const getState = () => { console.log(this.state) }
-
     const onButtonSubmit = () => {
-      document.querySelector(".face-image").src = this.state.input;
       fetch(server+'predict', {
         method: 'post',
         headers: {"Content-Type": "application/json"},
@@ -35,6 +33,7 @@ class App extends React.Component{
       })
       .then(resp => resp.json())
       .then(response => {
+        document.querySelector(".face-image").src = server+response.images[0].imgurl;
         this.setState({
           currPredictions: response.predictions,
           userImages: this.state.userImages.concat(response.images),
@@ -148,6 +147,12 @@ export default App;
   9. show the blobURLs in face-info   DONE
   10. show prediction results in face-info  DONE
   11. remember to revoke object url
+
+  focus: limiting the image/canvas size (css) so the blobs are correct
+         dealing with CORS policy, remove crossOrigin in img el, instead of fetching the img from original source, get it from the downloaded server
+         bug, on first predict, drawFaceBlobs was not executed. possible sol: setState is asnyc, so the state hasn't been update yet when drawFaceBlobs was executed
+
+
   12. create mockup data to simulate history images
   13. create history and its card components
   14. when user clicks on a history image, it will sent that data to currPrediction
