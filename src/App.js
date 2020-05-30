@@ -40,7 +40,6 @@ class App extends React.Component{
           userImages: this.state.userImages.concat(response.images),
           userPredictions: this.state.userPredictions.concat(response.predictions)
         });
-        drawFaceBlobs();
       })
       .catch(err => console.log(err));
     }
@@ -73,40 +72,6 @@ class App extends React.Component{
       .catch(err => console.log(err))
     }
 
-    const drawFaceBlobs = () => {
-      const canvas = document.getElementById("myCanvas");
-      const ctx = canvas.getContext('2d');
-      const imgObj = document.querySelector(".face-image");
-      imgObj.onload = () => {
-        let blobFile = [];    // where blobs will be appended to
-        let blobCount = 0;    // keep track of completed blobs
-        // grab original width and height of image (no matter how it scales in browser, croping with ctx.drawImage still uses the original props of image)
-        const width = imgObj.naturalWidth;
-        const height = imgObj.naturalHeight;
-        const predicts = this.state.currPredictions;
-        predicts.forEach(pred => {
-          // calculating crop area around detected faces
-          const sx = width * pred.bleft / 100;
-          const sy = height * pred.btop / 100;
-          const sWidth = (width * (100 - pred.bright))/100 - sx;
-          const sHeight = (height * (100 - pred.bbot))/100 - sy;
-          const targetImageSize = 80;   // output face blob resolution
-          canvas.width = canvas.height = targetImageSize;
-          ctx.drawImage(imgObj, sx, sy, sWidth, sHeight, 0, 0, targetImageSize, targetImageSize);
-          canvas.toBlob(blob => {     // .toBlob doesn't return immediate value, but the blob will show in a callback once it finish loading (async)
-            blobFile.push(blob);      // store each blob in an array
-            blobCount++;
-            if(blobCount === predicts.length){   // when all the blobs have been collected
-              revokeStateURL();
-              this.setState({ blobURL: blob2imgArr(blobFile)});
-              console.log("sending blobs..")
-              sendPrediction(blobFile);
-            }
-          }, 'image/jpeg', 0.95);
-        })
-      }
-    }
-
     const onClickProfileImg = (imgid) => {
       // if the first thing a user does is clicking profile image, then the FaceImage comp needs to show up
       // document.querySelector('.face').classList.remove('hidden');
@@ -121,11 +86,17 @@ class App extends React.Component{
       this.setState({currPredictions: predictions});
     }
 
-    // revoke previous objectURL
-    const revokeStateURL = () => { this.state.blobURL.forEach(url => URL.revokeObjectURL(url)) }
+    const setSendBlob = (blobFile) => {
+      this.setState({ blobURL: blob2imgArr(blobFile)});
+      // console.log("sending blobs..")
+      // sendPrediction(blobFile);
+    }
 
     //  convert new blobs into objectURL
     const blob2imgArr = (blobs) => blobs.map(blob => URL.createObjectURL(blob))
+
+    // revoke previous objectURL
+    const revokeStateURL = () => { this.state.blobURL.forEach(url => URL.revokeObjectURL(url)) }
 
     const {currPredictions, blobURL, userImages} = this.state;
     return (
@@ -139,7 +110,7 @@ class App extends React.Component{
               ? <Register onRouteChange={onRouteChange} updateUser={updateUser} server={server}/>
               : <div className="main-content">
                   <Search geturl={geturl} getState={getState} onButtonSubmit={onButtonSubmit}/>
-                  <Face currPredictions={currPredictions} blobURL={blobURL}/>
+                  <Face currPredictions={currPredictions} blobURL={blobURL} setSendBlob={setSendBlob}/>
                   <canvas id='myCanvas'></canvas>
                   <Profile userImages={userImages} onClickProfileImg={onClickProfileImg} server={server}/>
                 </div>
@@ -174,6 +145,7 @@ export default App;
   13. when user clicks on a profile image, it will sent that data to currPrediction   DONE
   14. show faceblobs of a profile image, use drawFaceBlobs, and don't revoke the object url yet, use it if later the user clicks an image again
       - rearrange drawFaceBlobs to fit in the Face components, maybe
+        hey, you don't have to call drawFaceBlobs all the time, everytime face-image has a new image, its .onload function will be called and draw the blobs automatically!
       - create userBlobs state, store a blob with it's predid
       - only revoke object url on signout
 */
