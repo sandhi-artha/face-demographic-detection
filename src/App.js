@@ -16,7 +16,9 @@ const initialState = {
   userProfile: '',
   currPredictions: [],
   blobURL: [],
-  isNewPredict: false
+  isNewPredict: false,
+  isImgClipboard: false,
+  blobClipboard: ''
 }
 
 const server = 'http://localhost:5000/';
@@ -88,6 +90,7 @@ class App extends React.Component{
     }
 
     const setSendBlob = (blobFile) => {
+      revokeStateURL();
       this.setState({ blobURL: blob2imgArr(blobFile) });
       if(this.state.isNewPredict){
         console.log("sending blobs..");
@@ -97,10 +100,39 @@ class App extends React.Component{
 
     //  convert new blobs into objectURL and returns the URL
     const blob2imgArr = (blobs) => blobs.map(blob => URL.createObjectURL(blob))
-    
 
     // revoke previous objectURL
     const revokeStateURL = () => { this.state.blobURL.forEach(url => URL.revokeObjectURL(url)) }
+
+    const getBlobClipboard = (pasteEvent, callback) => {
+      // make sure the callback is a function, if yes return data
+      const returnCb = (data) => { if(typeof(callback) === "function") callback(data) }
+      // if no data is in clipboard, return callback(undefined)
+      if(pasteEvent.clipboardData === false){ returnCb(undefined) };
+      // get clipboard data
+      const items = pasteEvent.clipboardData.items;
+      // if no items are present, return callback(undefined)
+      if(items === undefined){ returnCb(undefined) };
+      // items is an array containing data of the clipboard, in case of droping objects: may contain multiple data
+      for (let i=0; i<items.length; i++) {
+        // indexOf returns -1 if it doesn't find a match, "continue" skips that loop
+        if(items[i].type.indexOf("image") === -1) continue;
+        // get image on clipboard as blob
+        const blob = items[i].getAsFile();
+        returnCb(blob);
+      }
+    }
+    
+    const pasteClipboard = (event) => {
+      getBlobClipboard(event, imageBlob => {
+        // if there's an image, display in canvas
+        if(imageBlob){
+          // Convert the blob into an ObjectURL
+          console.log(URL.createObjectURL(imageBlob));
+          // imgObj.src = URLObj.createObjectURL(imageBlob);
+        }
+      })
+    }
 
     const {currPredictions, blobURL, userImages} = this.state;
     return (
@@ -113,7 +145,7 @@ class App extends React.Component{
             : this.state.route === 'register'
               ? <Register onRouteChange={onRouteChange} updateUser={updateUser} server={server}/>
               : <div className="main-content">
-                  <Search geturl={geturl} getState={getState} onButtonSubmit={onButtonSubmit}/>
+                  <Search geturl={geturl} getState={getState} onButtonSubmit={onButtonSubmit} pasteClipboard={pasteClipboard}/>
                   <Face currPredictions={currPredictions} blobURL={blobURL} setSendBlob={setSendBlob}/>
                   <canvas id='myCanvas'></canvas>
                   <Profile userImages={userImages} onClickProfileImg={onClickProfileImg} server={server}/>
@@ -152,4 +184,6 @@ export default App;
         hey, you don't have to call drawFaceBlobs all the time, everytime face-image has a new image, its .onload function will be called and draw the blobs automatically!
       - create userBlobs state, store a blob with it's predid, remove blobURL and use userBlobs instead   NOT USED
       - only revoke object url on signout   NOT USED
+  15. add clipboard paste function  DONE
+  16. add clipboard stateFlag is the detected object pasted clipboard or not
 */
