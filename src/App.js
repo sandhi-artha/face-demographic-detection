@@ -144,7 +144,7 @@ class App extends React.Component{
         if(blobClipboard){
           // Convert the blob into an ObjectURL
           this.setState({blobClipboard});
-          // imgObj.src = URLObj.createObjectURL(imageBlob);
+          document.querySelector(".face-image").src = URL.createObjectURL(blobClipboard);
         }
       })
     }
