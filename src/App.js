@@ -15,7 +15,8 @@ const initialState = {
   userPredictions: [],
   userProfile: '',
   currPredictions: [],
-  blobURL: []
+  blobURL: [],
+  isNewPredict: false
 }
 
 const server = 'http://localhost:5000/';
@@ -27,6 +28,7 @@ class App extends React.Component{
     const geturl = (event) => { this.setState({ input: event.target.value}) }
     const getState = () => { console.log(this.state) }
     const onButtonSubmit = () => {
+      this.setState({isNewPredict: true});
       fetch(server+'predict', {
         method: 'post',
         headers: {"Content-Type": "application/json"},
@@ -75,9 +77,8 @@ class App extends React.Component{
     const onClickProfileImg = (imgid) => {
       // if the first thing a user does is clicking profile image, then the FaceImage comp needs to show up
       // document.querySelector('.face').classList.remove('hidden');
+      this.setState({isNewPredict: false})
       const imgObj = document.querySelector(".face-image");
-      // if user previously predicts an image, the main img will have onload function that draws blob elements, profile images uses saved
-      imgObj.removeAttribute("onload");
       // find the selected image using imgid
       const images = this.state.userImages.filter(image => image.imgid === imgid);
       imgObj.src = server+images[0].imgurl;
@@ -87,13 +88,16 @@ class App extends React.Component{
     }
 
     const setSendBlob = (blobFile) => {
-      this.setState({ blobURL: blob2imgArr(blobFile)});
-      // console.log("sending blobs..")
-      // sendPrediction(blobFile);
+      this.setState({ blobURL: blob2imgArr(blobFile) });
+      if(this.state.isNewPredict){
+        console.log("sending blobs..");
+        sendPrediction(blobFile);
+      }
     }
 
-    //  convert new blobs into objectURL
+    //  convert new blobs into objectURL and returns the URL
     const blob2imgArr = (blobs) => blobs.map(blob => URL.createObjectURL(blob))
+    
 
     // revoke previous objectURL
     const revokeStateURL = () => { this.state.blobURL.forEach(url => URL.revokeObjectURL(url)) }
@@ -144,8 +148,8 @@ export default App;
   12. create profile and its card components  DONE
   13. when user clicks on a profile image, it will sent that data to currPrediction   DONE
   14. show faceblobs of a profile image, use drawFaceBlobs, and don't revoke the object url yet, use it if later the user clicks an image again
-      - rearrange drawFaceBlobs to fit in the Face components, maybe
+      - rearrange drawFaceBlobs to fit in the Face components, maybe    DONE
         hey, you don't have to call drawFaceBlobs all the time, everytime face-image has a new image, its .onload function will be called and draw the blobs automatically!
-      - create userBlobs state, store a blob with it's predid
-      - only revoke object url on signout
+      - create userBlobs state, store a blob with it's predid, remove blobURL and use userBlobs instead   NOT USED
+      - only revoke object url on signout   NOT USED
 */

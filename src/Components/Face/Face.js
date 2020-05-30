@@ -19,7 +19,7 @@ class Face extends React.Component{
             const ctx = canvas.getContext('2d');
             const imgObj = document.querySelector(".face-image");
             let blobFile = [];    // where blobs will be appended to
-            let blobCount = 0;    // keep track of completed blobs
+            let blobCount = 0;     // keep track of completed blobs (bcz it's asynchronous)
             // grab original width and height of image (no matter how it scales in browser, croping with ctx.drawImage still uses the original props of image)
             const width = imgObj.naturalWidth;
             const height = imgObj.naturalHeight;
@@ -29,18 +29,17 @@ class Face extends React.Component{
                 const sy = height * pred.btop / 100;
                 const sWidth = (width * (100 - pred.bright))/100 - sx;
                 const sHeight = (height * (100 - pred.bbot))/100 - sy;
-                const targetImageSize = 80;   // output face blob resolution
+                const targetImageSize = 80;     // output face blob resolution
                 canvas.width = canvas.height = targetImageSize;
                 ctx.drawImage(imgObj, sx, sy, sWidth, sHeight, 0, 0, targetImageSize, targetImageSize);
-                canvas.toBlob(blob => {     // .toBlob doesn't return immediate value, but the blob will show in a callback once it finish loading (async)
-                    blobFile.push(blob);      // store each blob in an array
+                canvas.toBlob(blob => {         // .toBlob doesn't return immediate value, but the blob will show in a callback once it finish loading (async)
+                    blobFile.push(blob);        // store each blob in an array
                     blobCount++;
-                    if(blobCount === currPredictions.length){ setSendBlob(blobFile) }   // when all the blobs have been collected
+                    if(blobCount === currPredictions.length){
+                        setSendBlob(blobFile) }   // when all the blobs have been collected
                 }, 'image/jpeg', 0.95);
             })
         }
-
-        
 
         return (
             <div className='face'>
