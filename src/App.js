@@ -29,23 +29,50 @@ class App extends React.Component{
   render(){
     const geturl = (event) => { this.setState({ input: event.target.value}) }
     const getState = () => { console.log(this.state) }
-    const onButtonSubmit = () => {
-      this.setState({isNewPredict: true});
-      fetch(server+'predict', {
-        method: 'post',
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({"imgUrl": this.state.input, "userid": this.state.userProfile.userid})
-      })
-      .then(resp => resp.json())
-      .then(response => {
-        document.querySelector(".face-image").src = server+response.images[0].imgurl;   // set to static url in server where the image was downloaded
-        this.setState({
-          currPredictions: response.predictions,
-          userImages: this.state.userImages.concat(response.images),
-          userPredictions: this.state.userPredictions.concat(response.predictions)
-        });
-      })
-      .catch(err => console.log(err));
+
+    const getPrediction = async (clipboard) => {
+      if(clipboard){
+        const form = new FormData();
+        form.append("imgBlob", this.state.blobClipboard, "clipboardImage");
+        form.append("userid", this.state.userProfile.userid);
+        const response = await fetch(server+'predictclipboard', { method: 'post', body: form })
+        const data = await response.json()
+        return data
+      } else {
+        this.setState({isNewPredict: true});
+        const response = await fetch(server+'predict', {
+          method: 'post',
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({"imgUrl": this.state.input, "userid": this.state.userProfile.userid})
+        })
+        const data = await response.json()
+        return data
+      }
+    }
+
+    const onButtonSubmit = async () => {
+      const data = await getPrediction(this.state.isImgClipboard);
+      document.querySelector(".face-image").src = server+data.images[0].imgurl;   // set to static url in server where the image was downloaded
+      this.setState({
+        currPredictions: data.predictions,
+        userImages: this.state.userImages.concat(data.images),
+        userPredictions: this.state.userPredictions.concat(data.predictions)
+      });
+      
+      this.setState({isImgClipboard: false});   // reset to false again
+    }
+
+    const onClickProfileImg = (imgid) => {
+      // if the first thing a user does is clicking profile image, then the FaceImage comp needs to show up
+      // document.querySelector('.face').classList.remove('hidden');
+      this.setState({isNewPredict: false})
+      const imgObj = document.querySelector(".face-image");
+      // find the selected image using imgid
+      const images = this.state.userImages.filter(image => image.imgid === imgid);
+      imgObj.src = server+images[0].imgurl;
+      // grab predictions related to the imgid and map the data to state.predict, and local url to state.blobUrl
+      const predictions = this.state.userPredictions.filter(predict => predict.imgid === imgid);
+      this.setState({currPredictions: predictions});
     }
 
     const onRouteChange = (newRoute) => {
@@ -74,19 +101,6 @@ class App extends React.Component{
       .then(resp => resp.json())
       .then(msg => console.log(msg))
       .catch(err => console.log(err))
-    }
-
-    const onClickProfileImg = (imgid) => {
-      // if the first thing a user does is clicking profile image, then the FaceImage comp needs to show up
-      // document.querySelector('.face').classList.remove('hidden');
-      this.setState({isNewPredict: false})
-      const imgObj = document.querySelector(".face-image");
-      // find the selected image using imgid
-      const images = this.state.userImages.filter(image => image.imgid === imgid);
-      imgObj.src = server+images[0].imgurl;
-      // grab predictions related to the imgid and map the data to state.predict, and local url to state.blobUrl
-      const predictions = this.state.userPredictions.filter(predict => predict.imgid === imgid);
-      this.setState({currPredictions: predictions});
     }
 
     const setSendBlob = (blobFile) => {
@@ -124,11 +138,12 @@ class App extends React.Component{
     }
     
     const pasteClipboard = (event) => {
-      getBlobClipboard(event, imageBlob => {
+      getBlobClipboard(event, blobClipboard => {
+        this.setState({isImgClipboard: true});
         // if there's an image, display in canvas
-        if(imageBlob){
+        if(blobClipboard){
           // Convert the blob into an ObjectURL
-          console.log(URL.createObjectURL(imageBlob));
+          this.setState({blobClipboard});
           // imgObj.src = URLObj.createObjectURL(imageBlob);
         }
       })
