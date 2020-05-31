@@ -1,13 +1,14 @@
 import React from 'react';
 import './Faceblobs.css';
 
-const Faceblobs = ({faceHighlight, blobURL}) => {
+const Faceblobs = ({faceSelect, blobURL}) => {
     return (
         <div className='faceblobs-div'>
             {
                 blobURL.map((face,i) => {
+                    const faceblobs = `faceblobs-image fb${i}`
                     return <div key={i}>
-                        <img className="faceblobs-image" src={face} alt='face' width='40px' onClick={() => faceHighlight(i)}/>
+                        <img className={faceblobs} src={face} alt='face' width='40px' onClick={() => faceSelect(i)}/>
                     </div>
                 })
             }

@@ -24,7 +24,11 @@
 
 .box {
     position: absolute;
-    border: solid 2px gold
+    border: solid 1px rgb(255, 228, 75)
+}
+
+.box-select {
+    border: solid 3px gold
 }
 
 .face-info h5 {

@@ -6,14 +6,24 @@ import Facepredicts from './Facepredicts';
 class Face extends React.Component{
     render(){
         const {currPredictions, blobURL, setSendBlob} = this.props;
-        const faceHighlight = (id) => {     // for showing prediction results for selected faces
+        const faceSelect = (id) => {     // showing prediction data, show border for face blobs, and highlight bounding box on image
+            // showing prediction data
             const unSelectPred = document.querySelectorAll(`.preds`);       // can have multiple images
             unSelectPred.forEach(el => el.classList.remove("highlight"))    // remove class "highlight" from all of them
             const selectPred = document.querySelector(`.preds${id}`);       // get the id of the face being clicked, then select the corresponding prediction element
             selectPred.classList.add("highlight");                          // show the prediction data
+            // show border
+            const unSelectFace = document.querySelectorAll(".faceblobs-image")
+            unSelectFace.forEach(el => el.classList.remove("faceblobs-selected"))
+            const selectFace = document.querySelector(`.fb${id}`);       
+            selectFace.classList.add("faceblobs-selected");              
+            // highlight bounding box
+            const unSelectBox = document.querySelectorAll(".box")
+            unSelectBox.forEach(el => el.classList.remove("box-select"))
+            const selectBox = document.querySelector(`.box${id}`);       
+            selectBox.classList.add("box-select"); 
         }
 
-        // imgObj.onload = () => {
         const drawFaceBlobs = () => {
             const canvas = document.getElementById("myCanvas");
             const ctx = canvas.getContext('2d');
@@ -48,9 +58,10 @@ class Face extends React.Component{
                         <img className="face-image" alt='face' src='' crossOrigin="anonymous" onLoad={drawFaceBlobs}/>
                         {
                             currPredictions.map((pred,i) => {
+                                const boxname = `box box${i}`;
                                 let boxStyle = {top: pred.btop+'%', left: pred.bleft+'%', bottom: pred.bbot+'%', right: pred.bright+'%'}
                                 return(
-                                    <div key={i} className="box" style={boxStyle}></div>
+                                    <div key={i} className={boxname} style={boxStyle}></div>
                                 )
                             })
                         }
@@ -59,7 +70,7 @@ class Face extends React.Component{
                 <div className="face-info">
                     <h5>Face detected: {currPredictions.length}</h5>
                     <div className="face-predictions">
-                        <Faceblobs faceHighlight={faceHighlight} blobURL={blobURL}/>
+                        <Faceblobs faceSelect={faceSelect} blobURL={blobURL}/>
                         <Facepredicts currPredictions={currPredictions}/>
                     </div>
                 </div>
