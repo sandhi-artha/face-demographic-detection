@@ -30,7 +30,7 @@ const Register = ({onRouteChange, updateUser, server}) => {
             <input type="email" name="email-address" id="register-email"/>
             <label htmlFor="register-pass">Password</label>
             <input type="password" name="pass" id="register-pass"/>
-            <input className="register" type="submit" value="Register" onClick={() => onSubmitRegister(onRouteChange, updateUser, server)}/>
+            <input className="btn-register" type="submit" value="Register" onClick={() => onSubmitRegister(onRouteChange, updateUser, server)}/>
         </div>
     )
 }

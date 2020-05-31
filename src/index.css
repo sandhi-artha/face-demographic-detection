@@ -3,7 +3,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     background: linear-gradient(to right, #f09819, #edde5d);
-    color: #212149
+    color: #212149;
 }
 
 code {

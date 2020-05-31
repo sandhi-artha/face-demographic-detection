@@ -1,0 +1,21 @@
+.register{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 3px;
+    padding: 30px 10px;
+    box-shadow: grey 2px 2px 4px;
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+label, input {
+    margin: 5px;
+}
+
+
+.btn-register {
+    margin: 15px 10px 5px;
+    padding: 5px 15px;
+    border-radius: 3px;
+}

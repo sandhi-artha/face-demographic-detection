@@ -29,7 +29,7 @@ const Signin = ({onRouteChange, updateUser, server}) => {
             <label htmlFor="signin-pass">Password</label>
             <input type="password" name="signin-pass" id="signin-pass"/>
             <input className="submit" type="submit" value="Sign In" onClick={() => onSubmitSignIn(onRouteChange, updateUser, server)}/>
-            <input className="register" type="submit" value="Register" onClick={() => onRouteChange('register')}/>
+            <input className="btn-register" type="submit" value="Register" onClick={() => onRouteChange('register')}/>
         </div>
     )
 }

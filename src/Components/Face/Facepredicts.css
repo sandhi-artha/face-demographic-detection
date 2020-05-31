@@ -9,14 +9,14 @@
 }
 
 .preds-label {
-    font-size: 14px;
+    font-size: 0.9rem;
     font-weight: bold;
     margin: 10px 5px;
 }
 
 .preds-output {
     color: white;
-    font-size: 12px;
+    font-size: 0.7rem;
     font-weight: 400;
     margin: 5px;
 }
