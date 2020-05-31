@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import Search from './Components/Search/Search';
+import Welcome from './Components/Search/Welcome';
 import Face from './Components/Face/Face';
 import Nav from './Components/Nav/Nav';
 import Signin from './Components/User/Signin';
@@ -139,20 +140,22 @@ class App extends React.Component{
     
     const pasteClipboard = (event) => {
       getBlobClipboard(event, blobClipboard => {
-        this.setState({isImgClipboard: true});
+        revokeStateURL();
+        this.setState({isImgClipboard: true, currPredictions: [], blobURL: []});
+        const imgObj = document.querySelector(".face-image");
+        imgObj.removeAttribute("onLoad");
         // if there's an image, display in canvas
         if(blobClipboard){
           // Convert the blob into an ObjectURL
           this.setState({blobClipboard});
-          document.querySelector(".face-image").src = URL.createObjectURL(blobClipboard);
+          imgObj.src = URL.createObjectURL(blobClipboard);
         }
       })
     }
 
-    const {currPredictions, blobURL, userImages} = this.state;
+    const {currPredictions, blobURL, userImages, userProfile} = this.state;
     return (
       <div className="App">
-        <h1>Welcome!</h1>
         <Nav onRouteChange={onRouteChange}/>
         {
           this.state.route === 'signin'
@@ -160,6 +163,7 @@ class App extends React.Component{
             : this.state.route === 'register'
               ? <Register onRouteChange={onRouteChange} updateUser={updateUser} server={server}/>
               : <div className="main-content">
+                  <Welcome userProfile={userProfile}/>
                   <Search geturl={geturl} getState={getState} onButtonSubmit={onButtonSubmit} pasteClipboard={pasteClipboard}/>
                   <Face currPredictions={currPredictions} blobURL={blobURL} setSendBlob={setSendBlob}/>
                   <canvas id='myCanvas'></canvas>
@@ -200,5 +204,13 @@ export default App;
       - create userBlobs state, store a blob with it's predid, remove blobURL and use userBlobs instead   NOT USED
       - only revoke object url on signout   NOT USED
   15. add clipboard paste function  DONE
-  16. add clipboard stateFlag is the detected object pasted clipboard or not
+  16. add clipboard stateFlag is the detected object pasted clipboard or not  DONE
+  17. fix layouts and styling
+      - change background, give box shadow to elements, add paddings
+      - put layout in middle
+      - hide the "face" div in the beginning, 
+      - hide clipboard preview after clicking detect
+      - hide canvas drawing faceblbs
+      - give fixed width to face-boxes (should match the image width)
+      - set max width for the main image
 */

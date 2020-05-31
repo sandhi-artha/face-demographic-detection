@@ -3,7 +3,7 @@ import React from 'react';
 const Nav = ({onRouteChange}) => {
     return (
         <div className='nav hidden'>
-            <p className='btn' onClick={() => onRouteChange('signin')}>Sign Out</p>
+            <p className='btn signout' onClick={() => onRouteChange('signin')}>Sign Out</p>
         </div>
     )
 }

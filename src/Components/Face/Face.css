@@ -1,10 +1,25 @@
+.highlight {
+    display: block !important;
+}
+
 .face {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 3fr 2fr;
+    grid-auto-rows: 400px;
+    background-color: rgba(42, 43, 43, 0.5);
+    padding: 0px 20px;
+}
+
+.face-whole {
+    align-self: center;
 }
 
 .face-bboxes {
     position: relative;
+}
+
+.face-image {
+    max-width: 600px;
 }
 
 .box {
@@ -12,16 +27,13 @@
     border: solid 2px gold
 }
 
-.face-info{
-    background-color: rgba(42, 43, 43, 0.5);
-}
 .face-info h5 {
     margin: 10px;
 }
 
 .face-predictions{
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 1fr 1fr;
     width: 100%;
 }
 

@@ -5,3 +5,30 @@
 .hidden {
     display: none !important;
 }
+
+.nav {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0px 20px;
+    height: 10vh;
+}
+  
+.main-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.welcome {
+    text-align: center;
+}
+
+.signout:hover {
+    transform: scale(1.1);
+}
+
+
+#myCanvas {
+    display: none;
+}
