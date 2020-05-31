@@ -16,6 +16,8 @@ const onSubmitSignIn = (onRouteChange, updateUser, server) => {
             updateUser(data);
             onRouteChange('content');
             document.querySelector('.nav').classList.remove('hidden');  // if successfully signin, show the signout nav
+        } else {
+            alert(data);
         }
     })
 }
