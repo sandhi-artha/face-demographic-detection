@@ -23,14 +23,21 @@ const onSubmitRegister = (onRouteChange, updateUser, server) => {
 const Register = ({onRouteChange, updateUser, server}) => {
     return (
         <div className='register'>
-            <h1>Register</h1>
-            <label htmlFor="register-name">Name</label>
-            <input type="text" name="name" id="register-name"/>
-            <label htmlFor="register-email">Email</label>
-            <input type="email" name="email-address" id="register-email"/>
-            <label htmlFor="register-pass">Password</label>
-            <input type="password" name="pass" id="register-pass"/>
-            <input className="btn-register" type="submit" value="Register" onClick={() => onSubmitRegister(onRouteChange, updateUser, server)}/>
+            <div className="back-arrow">
+                <img className="btn" src="https://img.icons8.com/nolan/64/arrow-pointing-left.png"
+                width="30px" height="30px" alt="back" onClick={()=>onRouteChange("signin")}/>
+                <p>Back</p>
+            </div>
+            <div className='content-register'>
+                <h1>Register</h1>
+                <label htmlFor="register-name">Name</label>
+                <input type="text" name="name" id="register-name" placeholder="make up a name"/>
+                <label htmlFor="register-email">Email</label>
+                <input type="email" name="email-address" id="register-email" placeholder="make up any email"/>
+                <label htmlFor="register-pass">Password</label>
+                <input type="password" name="pass" id="register-pass" placeholder="make up any password"/>
+                <input className="btn-register" type="submit" value="Register" onClick={() => onSubmitRegister(onRouteChange, updateUser, server)}/>
+            </div>
         </div>
     )
 }

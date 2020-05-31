@@ -172,7 +172,6 @@ class App extends React.Component{
                   <Profile userImages={userImages} onClickProfileImg={onClickProfileImg} server={server}/>
                 </div>
         }
-        
       </div>
     )
   }
