@@ -24,15 +24,15 @@
 
 .box {
     position: absolute;
-    border: solid 1px rgb(255, 228, 75)
+    border: solid 2px rgba(255, 217, 0, 0.5)
 }
-
+/* rgb(255, 228, 75) */
 .box-select {
-    border: solid 3px gold
+    border: solid 2px gold
 }
 
 .face-info h5 {
-    margin: 10px;
+    margin: 15px;
 }
 
 .face-predictions{

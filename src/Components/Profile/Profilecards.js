@@ -8,8 +8,12 @@ const Cards = ({image, onClickProfileImg, server}) => {
             <img src={server+image.imgurl} className='card-image'
              alt='people' width='150' height='100' onClick={() => onClickProfileImg(image.imgid)}/>
             <div className='card-text'>
-                <a className='card-link' href={image.oriurl}>URL</a>
-                <p>{image.face}</p>
+                {
+                    image.oriurl === 'user_data'
+                    ? <p>user data</p>
+                    : <a className='card-link' href={image.oriurl}>src</a>
+                }
+                <p>[{image.face}]</p>
             </div>
         </div>
     )

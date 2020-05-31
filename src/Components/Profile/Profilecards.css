@@ -1,10 +1,10 @@
 .card-div{
     margin: 5px 5px;
-    cursor: pointer;
 }
 
 .card-image{
     object-fit: cover;
+    cursor: pointer;
 }
 
 .card-text {
@@ -16,4 +16,10 @@
 
 .card-text p{
     margin: 0 10px;
+    font-size: 0.8rem;
+}
+
+.card-text a {
+    font-size: 0.8rem;
+    text-decoration: none;
 }
