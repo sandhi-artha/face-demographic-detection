@@ -18,12 +18,18 @@ const Facepredicts = ({currPredictions}) => {
                 const predClass = `preds preds${i}`;
                 return (
                     <div key={i} className={predClass}>
-                        <p className='preds-label'>Gender:</p>
-                        <p className='preds-output'>{pred.gender ? "masculine" : "feminine"}</p>
-                        <p className='preds-label'>Age:</p>
-                        <p className='preds-output'>{pred.age}</p>
-                        <p className='preds-label'>Cultural:</p>
-                        <p className='preds-output'>{raceOptions[pred.race]}</p>
+                        <div>
+                            <p className='preds-label'>Gender:</p>
+                            <p className='preds-output'>{pred.gender ? "masculine" : "feminine"}</p>
+                        </div>
+                        <div>
+                            <p className='preds-label'>Age:</p>
+                            <p className='preds-output'>{pred.age}</p>
+                        </div>
+                        <div>
+                            <p className='preds-label'>Cultural:</p>
+                            <p className='preds-output'>{raceOptions[pred.race]}</p>
+                        </div>
                     </div>
                 )
             })}
