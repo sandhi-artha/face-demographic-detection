@@ -52,6 +52,7 @@ class App extends React.Component{
     }
 
     const onButtonSubmit = async () => {
+      document.querySelector('.face').classList.remove('hidden');
       const data = await getPrediction(this.state.isImgClipboard);
       document.querySelector(".face-image").src = server+data.images[0].imgurl;   // set to static url in server where the image was downloaded
       this.setState({
@@ -65,7 +66,7 @@ class App extends React.Component{
 
     const onClickProfileImg = (imgid) => {
       // if the first thing a user does is clicking profile image, then the FaceImage comp needs to show up
-      // document.querySelector('.face').classList.remove('hidden');
+      document.querySelector('.face').classList.remove('hidden');
       this.setState({isNewPredict: false})
       const imgObj = document.querySelector(".face-image");
       // find the selected image using imgid
@@ -140,6 +141,7 @@ class App extends React.Component{
     
     const pasteClipboard = (event) => {
       getBlobClipboard(event, blobClipboard => {
+        document.querySelector('.face').classList.remove('hidden');
         revokeStateURL();
         this.setState({isImgClipboard: true, currPredictions: [], blobURL: []});
         const imgObj = document.querySelector(".face-image");

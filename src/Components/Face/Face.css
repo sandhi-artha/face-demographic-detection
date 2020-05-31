@@ -19,6 +19,7 @@
     }
 }
 
+/* for screens lower than 960px */
 @media (max-width: 960px){
     .face {
         display: grid;
@@ -43,7 +44,7 @@
 
 .box {
     position: absolute;
-    border: solid 2px rgba(255, 217, 0, 0.5)
+    border: solid 2px rgba(255, 217, 0, 0.4)
 }
 
 .box-select {

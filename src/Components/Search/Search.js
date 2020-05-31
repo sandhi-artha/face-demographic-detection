@@ -6,7 +6,6 @@ const Search = ({geturl, getState, onButtonSubmit, pasteClipboard}) => {
         <div className='search'>
             <input type='text' placeholder='Enter URL' size='60' onChange={geturl} onPaste={pasteClipboard}/>
             <button className='btn' onClick={onButtonSubmit}>Detect</button>
-            <button onClick={getState}>Check State</button>
         </div>
     )
 }

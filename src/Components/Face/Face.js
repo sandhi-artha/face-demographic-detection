@@ -52,7 +52,7 @@ class Face extends React.Component{
         }
 
         return (
-            <div className='face'>
+            <div className='face hidden'>
                 <div className='face-whole'>
                     <div className="face-bboxes">
                         <img className="face-image" alt='face' src='' crossOrigin="anonymous" onLoad={drawFaceBlobs}/>
