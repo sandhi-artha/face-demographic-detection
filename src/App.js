@@ -23,6 +23,7 @@ const initialState = {
 }
 
 const server = 'https://face-demographic-detection.herokuapp.com/';
+// const server = 'http://localhost:5000/';
 
 class App extends React.Component{
   state = { ...initialState } // using spread operator prevents mutating the initialState
@@ -36,33 +37,43 @@ class App extends React.Component{
         const form = new FormData();
         form.append("imgBlob", this.state.blobClipboard, "clipboardImage");
         form.append("userid", this.state.userProfile.userid);
-        const response = await fetch(server+'predictclipboard', { method: 'post', body: form })
-        const data = await response.json()
-        return data
+        try {
+          const response = await fetch(server+'predictclipboard', { method: 'post', body: form })
+          return await response.json()
+        } catch (error) {
+          return error          
+        }
       } else {      // if data comes from a URL, sends image URL and wait for prediction results
         this.setState({isNewPredict: true});
-        const response = await fetch(server+'predict', {
-          method: 'post',
-          headers: {"Content-Type": "application/json"},
-          body: JSON.stringify({"imgUrl": this.state.input, "userid": this.state.userProfile.userid})
-        })
-        const data = await response.json()
-        return data
+        try {
+          const response = await fetch(server+'predict', {
+            method: 'post',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({"imgUrl": this.state.input, "userid": this.state.userProfile.userid})
+          })
+          return await response.json()
+        } catch (error) {
+          return error
+        }
       }
     }
 
     // when user clicks on detect button
     const onDetect = async () => {
-      document.querySelector('.face').classList.remove('hidden');
-      const data = await getPrediction(this.state.isImgClipboard);
-      document.querySelector(".face-image").src = server+data.images[0].imgurl;   // set to static url in server where the image was downloaded
-      this.setState({     // appends the new prediction data to previous history
-        currPredictions: data.predictions,
-        userImages: this.state.userImages.concat(data.images),
-        userPredictions: this.state.userPredictions.concat(data.predictions)
-      });
+      const response = await getPrediction(this.state.isImgClipboard);
+      if (response.images){   // if the response contains prediction data
+        document.querySelector('.face').classList.remove('hidden');
+        document.querySelector(".face-image").src = server+response.images[0].imgurl;   // set to static url in server where the image was downloaded
+        this.setState({     // appends the new prediction data to previous history
+          currPredictions: response.predictions,
+          userImages: this.state.userImages.concat(response.images),
+          userPredictions: this.state.userPredictions.concat(response.predictions)
+        });
+        this.setState({isImgClipboard: false});   // reset to false again
+      } else {
+        alert(response);
+      }
       document.getElementById("search-input").value = '';   // clear the input url
-      this.setState({isImgClipboard: false});   // reset to false again
     }
 
     // triggers when user clicks a history image

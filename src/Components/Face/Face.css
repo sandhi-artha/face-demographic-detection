@@ -13,6 +13,7 @@
     }
     .face-image {
         max-width: 600px;
+        max-height: 360px;
     }
     .highlight {
         display: block !important;
