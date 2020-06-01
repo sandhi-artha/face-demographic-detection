@@ -58,10 +58,10 @@ class Face extends React.Component{
                         <img className="face-image" alt='face' src='' crossOrigin="anonymous" onLoad={drawFaceBlobs}/>
                         {
                             currPredictions.map((pred,i) => {
-                                const boxname = `box box${i}`;
+                                const boxname = `box box${i} btn`;
                                 let boxStyle = {top: pred.btop+'%', left: pred.bleft+'%', bottom: pred.bbot+'%', right: pred.bright+'%'}
                                 return(
-                                    <div key={i} className={boxname} style={boxStyle}></div>
+                                    <div key={i} className={boxname} style={boxStyle} onClick={() => faceSelect(i)}></div>
                                 )
                             })
                         }
