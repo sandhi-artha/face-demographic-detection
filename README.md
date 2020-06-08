@@ -7,7 +7,8 @@ Directions
  or
  - Take a screenshot of an image, copy to clipboard and paste in the input box, then hit detect
 
-To add:
- - download button: download the cropped faces with demographic data in filenames
+Updates:
+1. just realized filesystems in Heroku are ephemeral, so it deletes static files (stored images and blobs) every reset and every cycling. eventhough user files are stored in db, it failed to retrieve the image static urls refered in the db
+2. working to create branched version without database and routings, only the face detection with added feature of downloading the image and cropped face, will be named: face-cropper++
 
 Icons by Icons8
